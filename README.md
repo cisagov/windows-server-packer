@@ -1,6 +1,6 @@
-# skeleton-packer 💀📦 #
+# windows-commando-packer 💀📦 #
 
-[![GitHub Build Status](https://github.com/cisagov/skeleton-packer/workflows/build/badge.svg)](https://github.com/cisagov/skeleton-packer/actions)
+[![GitHub Build Status](https://github.com/cisagov/windows-commando-packer/workflows/build/badge.svg)](https://github.com/cisagov/windows-commando-packer/actions)
 
 This is a generic skeleton project that can be used to quickly get a
 new [cisagov](https://github.com/cisagov) GitHub
@@ -49,7 +49,7 @@ of the Project Setup README.
 
 If you have appropriate permissions for the repository you can view existing
 secrets on the
-[appropriate page](https://github.com/cisagov/skeleton-packer/settings/secrets)
+[appropriate page](https://github.com/cisagov/windows-commando-packer/settings/secrets)
 in the repository's settings.
 
 IMPORTANT: The account where your images will be built must have a VPC and
@@ -94,13 +94,13 @@ Add the following blocks to your AWS credentials file (be sure to replace the
 dummy account ID in the `role_arn` with your own):
 
 ```console
-[build-skeleton-packer]
+[build-windows-commando-packer]
 aws_access_key_id = AKIAXXXXXXXXXXXXXXXX
 aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-[cool-images-ec2amicreate-skeleton-packer]
-role_arn = arn:aws:iam::111111111111:role/EC2AMICreate-build-skeleton-packer
-source_profile = build-skeleton-packer
+[cool-images-ec2amicreate-windows-commando-packer]
+role_arn = arn:aws:iam::111111111111:role/EC2AMICreate-build-windows-commando-packer
+source_profile = build-windows-commando-packer
 role_session_name = example
 ```
 
@@ -124,7 +124,7 @@ ansible-galaxy install --force --force-with-deps --role-file src/requirements.ym
 export BUILD_REGION="us-east-1"
 export BUILD_REGION_KMS="alias/cool-amis"
 export GITHUB_RELEASE_TAG=$(./bump_version.sh show)
-AWS_PROFILE=cool-images-ec2amicreate-skeleton-packer packer build --timestamp-ui src/packer.json
+AWS_PROFILE=cool-images-ec2amicreate-windows-commando-packer packer build --timestamp-ui src/packer.json
 ```
 
 If you are satisfied with your pre-release image, you can easily create a release
@@ -136,7 +136,7 @@ and rerunning packer:
 ```console
 echo "us-east-2:alias/cool-amis,us-west-1:alias/cool-amis,\
 us-west-2:alias/cool-amis" | ./patch_packer_config.py src/packer.json
-AWS_PROFILE=cool-images-ec2amicreate-skeleton-packer packer build --timestamp-ui src/packer.json
+AWS_PROFILE=cool-images-ec2amicreate-windows-commando-packer packer build --timestamp-ui src/packer.json
 ```
 
 See the patcher script's help for more information about its options and

@@ -1,6 +1,4 @@
 <powershell>
-    # https://www.packer.io/docs/builders/amazon/ebs
-
     write-output "Running User Data Script"
     write-host "(host) Running User Data Script"
 

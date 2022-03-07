@@ -13,8 +13,12 @@ __pycache__
 .python-version
 *.egg-info
 dist
+.venv
 
 ## Terraform ##
 .terraform
 .terraform.lock.hcl
 .tfvars
+
+## MacOS ##
+.DS_Store

@@ -86,7 +86,7 @@ source "amazon-ebs" "windows" {
   source_ami         = data.amazon-ami.windows.id
 
   communicator   = "winrm"
-  user_data_file = "./winrm_bootstrap.txt"
+  user_data_file = "src/winrm_bootstrap.txt"
   winrm_username = "Administrator"
   winrm_timeout  = "20m"
   winrm_use_ssl  = true

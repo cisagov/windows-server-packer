@@ -65,8 +65,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade \
                       --requirement requirements.txt
-      - name: Install ansible roles
-        run: ansible-galaxy install --force --role-file src/requirements.yml
       # Do not copy the AMI to other regions until we have figured out a
       # workable mechanism for creating and managing AMI KMS keys in other
       # regions.

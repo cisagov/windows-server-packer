@@ -12,6 +12,7 @@ __pycache__
 .pytest_cache
 .python-version
 *.egg-info
+.venv/
 dist
 .venv
 

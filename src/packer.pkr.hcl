@@ -70,9 +70,9 @@ source "amazon-ebs" "windows" {
   ami_name                    = "windows-commando-hvm-${local.timestamp}-x86_64-ebs"
   ami_regions                 = var.ami_regions
   associate_public_ip_address = true
-  encrypt_boot                = true
+  encrypt_boot                = false
   instance_type               = "t2.large"
-  kms_key_id                  = var.build_region_kms
+  // kms_key_id                  = var.build_region_kms
   launch_block_device_mappings {
     delete_on_termination = true
     device_name           = "/dev/xvda"
@@ -80,10 +80,10 @@ source "amazon-ebs" "windows" {
     volume_size           = 8
     volume_type           = "gp3"
   }
-  region             = var.build_region
-  region_kms_key_ids = var.region_kms_keys
-  skip_create_ami    = var.skip_create_ami
-  source_ami         = data.amazon-ami.windows.id
+  region = var.build_region
+  // region_kms_key_ids = var.region_kms_keys
+  skip_create_ami = var.skip_create_ami
+  source_ami      = data.amazon-ami.windows.id
 
   communicator   = "winrm"
   user_data_file = "src/winrm_bootstrap.txt"

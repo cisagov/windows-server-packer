@@ -76,7 +76,7 @@ source "amazon-ebs" "windows" {
   // region_kms_key_ids = var.region_kms_keys
   communicator  = "winrm"
   encrypt_boot  = false
-  instance_type = "t2.large"
+  instance_type = "t3.large"
 
   region = var.build_region
 

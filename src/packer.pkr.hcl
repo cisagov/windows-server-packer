@@ -72,13 +72,14 @@ source "amazon-ebs" "windows" {
   ami_regions                 = var.ami_regions
   associate_public_ip_address = true
 
-  // kms_key_id                  = var.build_region_kms
-  // region_kms_key_ids = var.region_kms_keys
   communicator  = "winrm"
-  encrypt_boot  = false
+  encrypt_boot  = true
   instance_type = "t3.large"
 
-  region = var.build_region
+  kms_key_id = var.build_region_kms
+
+  region             = var.build_region
+  region_kms_key_ids = var.region_kms_keys
 
   skip_create_ami = var.skip_create_ami
   source_ami      = data.amazon-ami.windows.id

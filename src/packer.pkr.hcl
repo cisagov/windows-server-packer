@@ -78,23 +78,6 @@ source "amazon-ebs" "windows" {
 
   kms_key_id = var.build_region_kms
 
-  region             = var.build_region
-  region_kms_key_ids = var.region_kms_keys
-
-  skip_create_ami = var.skip_create_ami
-  source_ami      = data.amazon-ami.windows.id
-
-  # Many Linux distributions are now disallowing the use of RSA keys,
-  # so it makes sense to use an ED25519 key instead.
-  temporary_key_pair_type = "ed25519"
-
-  user_data_file = "src/winrm_bootstrap.txt"
-
-  winrm_insecure = true
-  winrm_timeout  = "20m"
-  winrm_use_ssl  = true
-  winrm_username = "Administrator"
-
   launch_block_device_mappings {
     delete_on_termination = true
     device_name           = "/dev/xvda"
@@ -102,6 +85,12 @@ source "amazon-ebs" "windows" {
     volume_size           = 8
     volume_type           = "gp3"
   }
+
+  region             = var.build_region
+  region_kms_key_ids = var.region_kms_keys
+
+  skip_create_ami = var.skip_create_ami
+  source_ami      = data.amazon-ami.windows.id
 
   subnet_filter {
     filters = {
@@ -119,11 +108,23 @@ source "amazon-ebs" "windows" {
     Team               = "VM Fusion - Development"
   }
 
+  # Many Linux distributions are now disallowing the use of RSA keys,
+  # so it makes sense to use an ED25519 key instead.
+  temporary_key_pair_type = "ed25519"
+
+  user_data_file = "src/winrm_bootstrap.txt"
+
   vpc_filter {
     filters = {
       "tag:Name" = "AMI Build"
     }
   }
+
+  winrm_insecure = true
+  winrm_timeout  = "20m"
+  winrm_use_ssl  = true
+  winrm_username = "Administrator"
+
 }
 
 build {

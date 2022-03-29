@@ -9,6 +9,7 @@ env:
   AWS_DEFAULT_REGION: us-east-1
   CURL_CACHE_DIR: ~/.cache/curl
   PIP_CACHE_DIR: ~/.cache/pip
+  RUN_TMATE: ${{ secrets.RUN_TMATE }}
 
 jobs:
   prerelease:
@@ -91,3 +92,6 @@ jobs:
       - name: Remove /usr/bin/python3 symlink to the installed python
         run: |
           sudo mv /usr/bin/python3-default /usr/bin/python3
+      - name: Setup tmate debug session
+        uses: mxschmitt/action-tmate@v3
+        if: env.RUN_TMATE

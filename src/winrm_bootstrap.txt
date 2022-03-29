@@ -12,7 +12,7 @@ $ErrorActionPreference = "stop"
 # Remove HTTP listener
 Remove-Item -Path WSMan:\Localhost\listener\listener* -Recurse
 
-# Create a self-signed certificate to let ssl work
+# Create a self-signed certificate to let SSL work
 $Cert = New-SelfSignedCertificate -CertstoreLocation Cert:\LocalMachine\My -DnsName "packer"
 New-Item -Path WSMan:\LocalHost\Listener -Transport HTTPS -Address * -CertificateThumbPrint $Cert.Thumbprint -Force
 

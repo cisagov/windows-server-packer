@@ -46,7 +46,7 @@ variable "skip_create_ami" {
   type        = bool
 }
 
-data "amazon-ami" "windows" {
+data "amazon-ami" "windows_server_2022" {
   filters = {
     name                = "Windows_Server-2022-English-Full-Base-*"
     root-device-type    = "ebs"
@@ -68,7 +68,7 @@ source "amazon-ebs" "windows" {
     volume_type           = "gp3"
   }
 
-  ami_name                    = "windows-commando-hvm-${local.timestamp}-x86_64-ebs"
+  ami_name                    = "windows-server-2022-${local.timestamp}-x86_64-ebs"
   ami_regions                 = var.ami_regions
   associate_public_ip_address = true
 
@@ -90,7 +90,7 @@ source "amazon-ebs" "windows" {
   region_kms_key_ids = var.region_kms_keys
 
   skip_create_ami = var.skip_create_ami
-  source_ami      = data.amazon-ami.windows.id
+  source_ami      = data.amazon-ami.windows_server_2022.id
 
   subnet_filter {
     filters = {
@@ -99,8 +99,8 @@ source "amazon-ebs" "windows" {
   }
 
   tags = {
-    Application        = "Windows Commando VM"
-    Base_AMI_Name      = data.amazon-ami.windows.name
+    Application        = "Windows Server 2022"
+    Base_AMI_Name      = data.amazon-ami.windows_server_2022.name
     GitHub_Release_URL = var.release_url
     OS_Version         = "Windows Server 2022"
     Pre_Release        = var.is_prerelease

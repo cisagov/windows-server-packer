@@ -125,6 +125,9 @@ source "amazon-ebs" "windows" {
   winrm_use_ssl  = true
   winrm_username = "Administrator"
 
+  # Use password set by WinRM. This is temporary, will be removed before release.
+  winrm_password = "SuperS3cr3t!!!!"
+
 }
 
 build {

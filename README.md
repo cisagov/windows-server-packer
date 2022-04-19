@@ -2,7 +2,7 @@
 
 [![GitHub Build Status](https://github.com/cisagov/windows-commando-packer/workflows/build/badge.svg)](https://github.com/cisagov/windows-commando-packer/actions)
 
-This project can be used to create machine images based on
+This project can be used to create Amazon Machine Images based on
 [Windows Commando VM](https://www.mandiant.com/resources/commando-vm-windows-offensive-distribution),
 a Windows penetration testing distribution.
 

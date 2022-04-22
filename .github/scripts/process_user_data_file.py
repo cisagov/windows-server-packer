@@ -49,4 +49,4 @@ cmd.exe /c net start winrm
 </powershell>
 
 """
-).stream(secret=secret).dump("./winrm_bootstrap.txt")
+).stream(secret=secret).dump("./src/winrm_bootstrap.txt")

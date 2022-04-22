@@ -223,7 +223,7 @@ jobs:
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
       - name: Process user data file
-        run: python ./.github/scripts/process_user_data.py
+        run: python .github/scripts/process_user_data_file.py
       - name: Create machine image
         # This runs through the AMI creation process but does not
         # actually create an AMI

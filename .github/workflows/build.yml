@@ -203,8 +203,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade \
                       --requirement requirements.txt
-      - name: Process user data file
-        run: python .github/scripts/process_user_data.py
       - name: Assume AWS build role
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -224,6 +222,8 @@ jobs:
           sudo mv /usr/bin/python3 /usr/bin/python3-default
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
+      - name: Process user data file
+        run: python ./.github/scripts/process_user_data.py
       - name: Create machine image
         # This runs through the AMI creation process but does not
         # actually create an AMI

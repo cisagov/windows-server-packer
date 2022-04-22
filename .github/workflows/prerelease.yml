@@ -21,7 +21,7 @@ jobs:
       - id: setup-python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.10"
+          python-version: '3.10'
       - uses: actions/cache@v3
         env:
           BASE_CACHE_KEY: "${{ github.job }}-${{ runner.os }}-\
@@ -78,6 +78,8 @@ jobs:
           sudo mv /usr/bin/python3 /usr/bin/python3-default
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
+      - name: Process user data file
+        run: python ./.github/scripts/process_user_data.py
       - name: Create machine image
         env:
           GITHUB_IS_PRERELEASE: ${{ github.event.release.prerelease }}

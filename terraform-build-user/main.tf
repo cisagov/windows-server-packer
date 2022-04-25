@@ -9,6 +9,6 @@ module "iam_user" {
     aws.images-staging-ssm    = aws.images-staging-ssm
   }
 
-  ssm_parameters = ["/cyhy/dev/users", "/ssh/public_keys/*"]
+  ssm_parameters = ["/cyhy/dev/users", "/ssh/public_keys/*", "/windows/commando/administrator/password"]
   user_name      = "build-windows-commando-packer"
 }

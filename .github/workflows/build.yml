@@ -224,6 +224,10 @@ jobs:
           /usr/bin/python3
       - name: Process user data file
         run: python .github/scripts/process_user_data_file.py
+      - name: Initialize Packer
+        # This command runs `packer init` to install the required plugins
+        run: |
+          packer init src/packer.pkr.hcl
       - name: Create machine image
         # This runs through the AMI creation process but does not
         # actually create an AMI

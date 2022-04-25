@@ -9,28 +9,27 @@ password = ssm.get_parameter(Name="/windows/commando/administrator/password")[
     "Parameter"
 ]["Value"]
 
+print("[Debugging] Password: ", password)
+
+secret = "SuperS3cr3t!!!!"
+
+# Process user data file with the Windows Administrator password
 Template(
     r"""<powershell>
 # https://www.packer.io/docs/builders/amazon/ebs
-
-# Set administrator password
-net user Administrator {{ password }}
+# Set administrator secret
+net user Administrator {{ secret }}
 wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
-
 write-output "Running User Data Script"
 write-host "(host) Running User Data Script"
 Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force -ErrorAction Ignore
-
 # Don't set this before Set-ExecutionPolicy as it throws an error
 $ErrorActionPreference = "stop"
-
 # Remove HTTP listener
 Remove-Item -Path WSMan:\Localhost\listener\listener* -Recurse
 # Create a self-signed certificate to let SSL work
-
 $Cert = New-SelfSignedCertificate -CertstoreLocation Cert:\LocalMachine\My -DnsName "packer"
 New-Item -Path WSMan:\LocalHost\Listener -Transport HTTPS -Address * -CertificateThumbPrint $Cert.Thumbprint -Force
-
 # WinRM
 write-output "Setting up WinRM"
 write-host "(host) setting up WinRM"
@@ -49,6 +48,5 @@ cmd.exe /c net stop winrm
 cmd.exe /c sc config winrm start= auto
 cmd.exe /c net start winrm
 </powershell>
-
 """
-).stream(password=password).dump("./src/winrm_bootstrap.txt")
+).stream(secret=secret).dump("./src/winrm_bootstrap.txt")

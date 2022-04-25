@@ -79,6 +79,8 @@ jobs:
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
       - name: Process user data file
+        # Process the user data script with the windows admin password
+        # pulled from AWS Parameter Store
         run: python .github/scripts/process_user_data_file.py
       - name: Initialize Packer
         # This command runs `packer init` to install the required plugins

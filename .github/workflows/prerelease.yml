@@ -79,21 +79,26 @@ jobs:
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
       - name: Process user data file
+        id: process-user-data
         # Process the user data script with the windows admin password
-        # pulled from AWS Parameter Store
-        run: python .github/scripts/process_user_data_file.py
+        # pulled from AWS Parameter Store. Return the admin password for
+        # Packer to consume.
+        run: |
+          output=$(python .github/scripts/process_user_data_file.py)
+          echo "::set-output name=pass::$output"
       - name: Create machine image
         env:
           GITHUB_IS_PRERELEASE: ${{ github.event.release.prerelease }}
           GITHUB_RELEASE_TAG: ${{ github.event.release.tag_name }}
           GITHUB_RELEASE_URL: ${{ github.event.release.html_url }}
         run: |
-          PKR_VAR_admin_password='SuperS3cr3t!!!!' \
-            packer build -timestamp-ui \
-            -var is_prerelease=${{ github.event.release.prerelease }} \
-            -var release_tag=${{ github.event.release.tag_name }} \
-            -var release_url=${{ github.event.release.html_url }} \
-            src/packer.pkr.hcl
+          PKR_VAR_admin_pass=\
+          '::add-mask::${{ steps.process-user-data.outputs.pass }}' \
+          packer build -timestamp-ui \
+          -var is_prerelease=${{ github.event.release.prerelease }} \
+          -var release_tag=${{ github.event.release.tag_name }} \
+          -var release_url=${{ github.event.release.html_url }} \
+          src/packer.pkr.hcl
       - name: Remove /usr/bin/python3 symlink to the installed python
         run: |
           sudo mv /usr/bin/python3-default /usr/bin/python3

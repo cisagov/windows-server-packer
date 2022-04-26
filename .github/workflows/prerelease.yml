@@ -88,7 +88,8 @@ jobs:
           GITHUB_RELEASE_TAG: ${{ github.event.release.tag_name }}
           GITHUB_RELEASE_URL: ${{ github.event.release.html_url }}
         run: |
-          packer build -timestamp-ui \
+          PKR_VAR_admin_password='SuperS3cr3t!!!!' \
+            packer build -timestamp-ui \
             -var is_prerelease=${{ github.event.release.prerelease }} \
             -var release_tag=${{ github.event.release.tag_name }} \
             -var release_url=${{ github.event.release.html_url }} \

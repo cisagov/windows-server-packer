@@ -2,7 +2,7 @@
 # https://www.packer.io/docs/builders/amazon/ebs
 
 # Set administrator password
-net user Administrator {{ password }}
+net user Administrator SuperS3cr3t!!!!
 wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
 
 write-output "Running User Data Script"

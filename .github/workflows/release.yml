@@ -99,7 +99,8 @@ jobs:
         run: python .github/scripts/process_user_data_file.py
       - name: Create machine image
         run: |
-          packer build -timestamp-ui \
+          PKR_VAR_admin_password='SuperS3cr3t!!!!' \
+            packer build -timestamp-ui \
             -var is_prerelease=${{ github.event.release.prerelease }} \
             -var release_tag=${{ github.event.release.tag_name }} \
             -var release_url=${{ github.event.release.html_url }} \

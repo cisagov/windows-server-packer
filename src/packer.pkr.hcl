@@ -1,3 +1,10 @@
+variable "admin_password" {
+  default     = false
+  description = "Windows Administrator Password."
+  sensitive   = true
+  type        = string
+}
+
 variable "ami_regions" {
   default     = []
   description = "The list of AWS regions to copy the AMI to once it has been created. Example: [\"us-east-1\"]"
@@ -126,7 +133,7 @@ source "amazon-ebs" "windows" {
   winrm_username = "Administrator"
 
   # Use password set by WinRM. This is temporary, will be removed before release.
-  winrm_password = "SuperS3cr3t!!!!"
+  winrm_password = var.admin_password
 
 }
 

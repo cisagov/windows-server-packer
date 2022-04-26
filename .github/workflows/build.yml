@@ -79,10 +79,6 @@ jobs:
             ${{ env.CURL_CACHE_DIR }}/"${PACKER_ZIP}"
           sudo mv /usr/local/bin/packer /usr/local/bin/packer-default
           sudo ln -s /opt/packer/packer /usr/local/bin/packer
-      # - name: Initialize Packer
-      #   # This command runs `packer init` to install the required plugins
-      #   run: |
-      #     packer init src/packer.pkr.hcl
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ steps.setup-env.outputs.terraform-version }}
@@ -230,17 +226,14 @@ jobs:
         # Process the user data script with the windows admin password
         # pulled from AWS Parameter Store
         run: python .github/scripts/process_user_data_file.py
-      # - name: Initialize Packer
-      #   # This command runs `packer init` to install the required plugins
-      #   run: |
-      #     packer init src/packer.pkr.hcl
       - name: Create machine image
         # This runs through the AMI creation process but does not
         # actually create an AMI
         run: |
+          PKR_VAR_admin_password='SuperS3cr3t!!!!' \
           packer build -timestamp-ui \
-            -var skip_create_ami=true \
-            src/packer.pkr.hcl
+          -var skip_create_ami=true \
+          src/packer.pkr.hcl
       - name: Remove /usr/bin/python3 symlink to the installed Python
         run: |
           sudo mv /usr/bin/python3-default /usr/bin/python3

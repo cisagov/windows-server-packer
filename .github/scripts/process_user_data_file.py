@@ -16,3 +16,5 @@ with open(user_data_file_location) as user_data_file:
     Template(user_data_file.read()).stream(password=password).dump(
         user_data_file_location
     )
+
+print(password)

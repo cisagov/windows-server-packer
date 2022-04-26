@@ -1,4 +1,4 @@
-variable "admin_password" {
+variable "admin_pass" {
   default     = false
   description = "Windows Administrator Password."
   sensitive   = true
@@ -133,7 +133,7 @@ source "amazon-ebs" "windows" {
   winrm_username = "Administrator"
 
   # Use password set by WinRM. This is temporary, will be removed before release.
-  winrm_password = var.admin_password
+  winrm_password = var.admin_pass
 
 }
 

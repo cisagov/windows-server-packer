@@ -230,12 +230,13 @@ jobs:
         run: |
           output=$(python .github/scripts/process_user_data_file.py)
           echo "::set-output name=pass::$output"
+          echo ::add-mask::${{ steps.process-user-data.outputs.pass }}
       - name: Create machine image
         # This runs through the AMI creation process but does not
         # actually create an AMI
         run: |
           PKR_VAR_admin_pass=\
-          '::add-mask::${{ steps.process-user-data.outputs.pass }}' \
+          '${{ steps.process-user-data.outputs.pass }}' \
           packer build -timestamp-ui \
           -var skip_create_ami=true \
           src/packer.pkr.hcl

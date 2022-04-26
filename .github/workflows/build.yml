@@ -229,8 +229,8 @@ jobs:
         # Packer to consume.
         run: |
           output=$(python .github/scripts/process_user_data_file.py)
+          echo "::add-mask::$output"
           echo "::set-output name=pass::$output"
-          echo ::add-mask::${{ steps.process-user-data.outputs.pass }}
       - name: Create machine image
         # This runs through the AMI creation process but does not
         # actually create an AMI

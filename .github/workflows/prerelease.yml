@@ -85,6 +85,7 @@ jobs:
         # Packer to consume.
         run: |
           output=$(python .github/scripts/process_user_data_file.py)
+          echo "::add-mask::$output"
           echo "::set-output name=pass::$output"
       - name: Create machine image
         env:
@@ -93,7 +94,7 @@ jobs:
           GITHUB_RELEASE_URL: ${{ github.event.release.html_url }}
         run: |
           PKR_VAR_admin_pass=\
-          '::add-mask::${{ steps.process-user-data.outputs.pass }}' \
+          '${{ steps.process-user-data.outputs.pass }}' \
           packer build -timestamp-ui \
           -var is_prerelease=${{ github.event.release.prerelease }} \
           -var release_tag=${{ github.event.release.tag_name }} \

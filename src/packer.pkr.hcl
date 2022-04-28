@@ -74,17 +74,13 @@ source "amazon-ebs" "windows" {
     volume_size           = 8
     volume_type           = "gp3"
   }
-
   ami_name                    = "windows-server-2022-${local.timestamp}-x86_64-ebs"
   ami_regions                 = var.ami_regions
   associate_public_ip_address = true
-
-  communicator  = "winrm"
-  encrypt_boot  = true
-  instance_type = "t3.large"
-
-  kms_key_id = var.build_region_kms
-
+  communicator                = "winrm"
+  encrypt_boot                = true
+  instance_type               = "t3.large"
+  kms_key_id                  = var.build_region_kms
   launch_block_device_mappings {
     delete_on_termination = true
     device_name           = "/dev/xvda"
@@ -92,19 +88,15 @@ source "amazon-ebs" "windows" {
     volume_size           = 8
     volume_type           = "gp3"
   }
-
   region             = var.build_region
   region_kms_key_ids = var.region_kms_keys
-
-  skip_create_ami = var.skip_create_ami
-  source_ami      = data.amazon-ami.windows_server_2022.id
-
+  skip_create_ami    = var.skip_create_ami
+  source_ami         = data.amazon-ami.windows_server_2022.id
   subnet_filter {
     filters = {
       "tag:Name" = "AMI Build"
     }
   }
-
   tags = {
     Application        = "Windows Server 2022"
     Base_AMI_Name      = data.amazon-ami.windows_server_2022.name
@@ -114,27 +106,20 @@ source "amazon-ebs" "windows" {
     Release            = var.release_tag
     Team               = "VM Fusion - Development"
   }
-
   # Many Linux distributions are now disallowing the use of RSA keys,
   # so it makes sense to use an ED25519 key instead.
   temporary_key_pair_type = "ed25519"
-
-  user_data_file = "src/winrm_bootstrap.txt"
-
+  user_data_file          = "src/winrm_bootstrap.txt"
   vpc_filter {
     filters = {
       "tag:Name" = "AMI Build"
     }
   }
-
   winrm_insecure = true
+  winrm_password = var.admin_pass
   winrm_timeout  = "20m"
   winrm_use_ssl  = true
   winrm_username = "Administrator"
-
-  # Use password set by WinRM. This is temporary, will be removed before release.
-  winrm_password = var.admin_pass
-
 }
 
 build {

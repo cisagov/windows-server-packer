@@ -2,6 +2,9 @@
 # Files already tracked by Git are not affected.
 # See: https://git-scm.com/docs/gitignore
 
+## MacOS ##
+.DS_Store
+
 ## Packer ##
 packer_cache
 
@@ -14,12 +17,8 @@ __pycache__
 *.egg-info
 .venv/
 dist
-.venv
 
 ## Terraform ##
 .terraform
 .terraform.lock.hcl
 .tfvars
-
-## MacOS ##
-.DS_Store

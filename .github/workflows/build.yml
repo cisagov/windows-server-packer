@@ -224,16 +224,19 @@ jobs:
           /usr/bin/python3
       - name: Process user data file
         id: process-user-data
-        # Process the user data script with the windows admin password
-        # pulled from AWS Parameter Store. Return the admin password for
-        # Packer to consume.
+        # Process the user data script with the Windows admin password
+        # pulled from AWS Parameter Store. Return the admin password to
+        # pass into Packer as an environment variable.
         run: |
           output=$(python .github/scripts/process_user_data_file.py)
           echo "::add-mask::$output"
           echo "::set-output name=pass::$output"
       - name: Create machine image
         # This runs through the AMI creation process but does not
-        # actually create an AMI
+        # actually create an AMI.
+        # See https://www.packer.io/guides/hcl/variables under the
+        # "From environment variables" section for details about
+        # PKR_VAR environment variables
         run: |
           PKR_VAR_admin_pass=\
           '${{ steps.process-user-data.outputs.pass }}' \

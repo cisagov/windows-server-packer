@@ -2,6 +2,9 @@
 # Files already tracked by Git are not affected.
 # See: https://git-scm.com/docs/gitignore
 
+## Intellij ##
+.idea/
+
 ## MacOS ##
 .DS_Store
 
@@ -22,5 +25,3 @@ dist
 .terraform
 .terraform.lock.hcl
 .tfvars
-
-.idea/

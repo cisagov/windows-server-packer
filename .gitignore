@@ -22,3 +22,5 @@ dist
 .terraform
 .terraform.lock.hcl
 .tfvars
+
+.idea/

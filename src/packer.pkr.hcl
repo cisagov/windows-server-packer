@@ -1,6 +1,6 @@
 variable "admin_pass" {
   default     = false
-  description = "Windows Administrator Password."
+  description = "Windows Administrator password."
   sensitive   = true
   type        = string
 }

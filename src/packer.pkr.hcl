@@ -1,6 +1,6 @@
 variable "admin_pass" {
   default     = false
-  description = "Windows Administrator password."
+  description = "The password used to set the Administrator password and connect to the instance via WinRM."
   sensitive   = true
   type        = string
 }

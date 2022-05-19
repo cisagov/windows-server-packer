@@ -7,7 +7,7 @@ ssm = boto3.client("ssm")
 
 # Retrieve Windows Administrator password from AWS SSM
 password = ssm.get_parameter(
-    Name="/windows/commando/administrator/password", WithDecryption=True
+    Name="/windows/server/administrator/password", WithDecryption=True
 )["Parameter"]["Value"]
 
 user_data_file_location = "./src/winrm_bootstrap.txt"

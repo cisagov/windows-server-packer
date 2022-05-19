@@ -241,9 +241,9 @@ jobs:
         # "From environment variables" section for details about
         # PKR_VAR environment variables
         run: |
+          PKR_VAR_admin_pass=\
+          "${{ steps.process-user-data.outputs.pass }}" \
           packer build -timestamp-ui \
-            -var admin_pass=\
-            "${{ steps.process-user-data.outputs.pass }}" \
             -var skip_create_ami=true \
             src/packer.pkr.hcl
       - name: Remove /usr/bin/python3 symlink to the installed Python

@@ -21,7 +21,7 @@ jobs:
       - id: setup-python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.10'
+          python-version: "3.10"
       - uses: actions/cache@v3
         env:
           BASE_CACHE_KEY: "${{ github.job }}-${{ runner.os }}-\

@@ -24,7 +24,7 @@ locals {
   account_name_regex  = format("^env[[:digit:]]+ \\(%s\\)$", local.images_account_type)
 }
 
-# The IDs of all cisagov/windows-commando-packer AMIs
+# The IDs of all cisagov/windows-server-packer AMIs
 data "aws_ami_ids" "historical_amis" {
   filter {
     name = "name"

@@ -1,4 +1,4 @@
-variable "admin_pass" {
+variable "winrm_password" {
   default     = false
   description = "The password used to set the Administrator password and connect to the instance via WinRM."
   sensitive   = true
@@ -116,7 +116,7 @@ source "amazon-ebs" "windows" {
     }
   }
   winrm_insecure = true
-  winrm_password = var.admin_pass
+  winrm_password = var.winrm_password
   winrm_timeout  = "20m"
   winrm_use_ssl  = true
   winrm_username = "Administrator"

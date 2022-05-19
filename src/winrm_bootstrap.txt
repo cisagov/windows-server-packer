@@ -1,5 +1,6 @@
 <powershell>
 # https://www.packer.io/docs/builders/amazon/ebs
+# This user data file template must be processed to populate the password variable
 
 # Set administrator password
 net user Administrator {{ password }}

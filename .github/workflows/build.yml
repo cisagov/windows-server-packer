@@ -24,12 +24,12 @@ jobs:
       - id: setup-python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.10"
+          python-version: '3.10'
       # We need the Go version and Go cache location for the actions/cache step,
       # so the Go installation must happen before that.
       - uses: actions/setup-go@v2
         with:
-          go-version: "1.16"
+          go-version: '1.16'
       - name: Store installed Go version
         id: go-version
         run: |
@@ -112,7 +112,7 @@ jobs:
       - id: setup-python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.10"
+          python-version: '3.10'
       - uses: actions/cache@v3
         env:
           BASE_CACHE_KEY: "${{ github.job }}-${{ runner.os }}-\
@@ -165,7 +165,7 @@ jobs:
       - id: setup-python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.10"
+          python-version: '3.10'
       - uses: actions/cache@v3
         env:
           BASE_CACHE_KEY: "${{ github.job }}-${{ runner.os }}-\
@@ -222,6 +222,9 @@ jobs:
           sudo mv /usr/bin/python3 /usr/bin/python3-default
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
+      - name: Install process user data file script dependencies
+        run: |
+          pip install boto3 jinja2
       - name: Process user data file
         id: process-user-data
         # Process the user data script with the Windows admin password

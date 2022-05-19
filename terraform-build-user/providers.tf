@@ -10,7 +10,7 @@ locals {
 
   tags = {
     Team        = "CISA - Development"
-    Application = "windows-commando-packer"
+    Application = "windows-server-packer"
   }
 }
 

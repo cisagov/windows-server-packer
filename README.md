@@ -2,9 +2,8 @@
 
 [![GitHub Build Status](https://github.com/cisagov/windows-server-packer/workflows/build/badge.svg)](https://github.com/cisagov/windows-server-packer/actions)
 
-This project can be used to create Amazon Machine Images based on
-[Windows Commando VM](https://www.mandiant.com/resources/commando-vm-windows-offensive-distribution),
-a Windows penetration testing distribution.
+This project can be used to create a custom Amazon Machine Images based on
+Windows Server 2022
 
 ## Pre-requisites ##
 

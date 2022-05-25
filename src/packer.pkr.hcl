@@ -142,7 +142,6 @@ build {
   }
 
   provisioner "powershell" {
-    pause_before = "90s"
     scripts      = ["src/powershell/enable-rdp.ps1"]
   }
 }

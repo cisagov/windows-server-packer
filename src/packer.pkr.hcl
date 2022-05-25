@@ -128,11 +128,21 @@ build {
   ]
 
   provisioner "powershell" {
-    inline = [
-      "write-output Remove Windows Defender",
-      "Uninstall-WindowsFeature Windows-Defender",
-    ]
+    pause_before = "10s"
+    scripts      = ["src/powershell/disable-defender.ps1"]
   }
 
-  provisioner "windows-restart" {}
+  provisioner "windows-restart" {
+    restart_timeout = "30m"
+  }
+
+  provisioner "powershell" {
+    pause_before = "90s"
+    scripts      = ["src/powershell/check-defender.ps1"]
+  }
+
+  provisioner "powershell" {
+    pause_before = "90s"
+    scripts      = ["src/powershell/enable-rdp.ps1"]
+  }
 }

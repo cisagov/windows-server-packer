@@ -150,6 +150,6 @@ build {
   }
 
   provisioner "powershell" {
-    scripts      = ["src/powershell/enable-rdp.ps1"]
+    scripts = ["src/powershell/enable-rdp.ps1"]
   }
 }

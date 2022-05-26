@@ -94,8 +94,7 @@ jobs:
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
       - name: Install process user data file script dependencies
-        run: |
-          pip install boto3 jinja2
+        run: python -m pip install boto3 jinja2
       - name: Process user data file
         id: process-user-data
         # Process the user data script with the Windows admin password

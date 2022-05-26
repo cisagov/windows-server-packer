@@ -2,7 +2,7 @@
 
 [![GitHub Build Status](https://github.com/cisagov/windows-server-packer/workflows/build/badge.svg)](https://github.com/cisagov/windows-server-packer/actions)
 
-This project can be used to create a custom Amazon Machine Images based on
+This project can be used to create a custom Amazon Machine Image based on
 Windows Server 2022
 
 ## Pre-requisites ##
@@ -124,7 +124,6 @@ Here is an example of how to kick off a pre-release build:
 
 ```console
 pip install --requirement requirements-dev.txt
-ansible-galaxy install --force --force-with-deps --role-file src/requirements.yml
 AWS_PROFILE=cool-images-ec2amicreate-windows-server-packer packer build --timestamp-ui -var release_tag=$(./bump_version.sh show) -var is_prerelease=true src/packer.pkr.hcl
 ```
 

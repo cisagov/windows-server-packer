@@ -5,6 +5,12 @@ variable "winrm_password" {
   type        = string
 }
 
+variable "winrm_username" {
+  default     = "Administrator"
+  description = "The username used to connect to the instance via WinRM."
+  type        = string
+}
+
 variable "ami_regions" {
   default     = []
   description = "The list of AWS regions to copy the AMI to once it has been created. Example: [\"us-east-1\"]"
@@ -119,7 +125,7 @@ source "amazon-ebs" "windows" {
   winrm_password = var.winrm_password
   winrm_timeout  = "20m"
   winrm_use_ssl  = true
-  winrm_username = "Administrator"
+  winrm_username = var.winrm_username
 }
 
 build {

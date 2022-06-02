@@ -236,14 +236,10 @@ jobs:
       - name: Create machine image
         # This runs through the AMI creation process but does not
         # actually create an AMI.
-        # See https://www.packer.io/guides/hcl/variables under the
-        # "From environment variables" section for details about
-        # PKR_VAR environment variables
         run: |
-          PKR_VAR_winrm_password=\
-          "${{ steps.process-user-data.outputs.pass }}" \
           packer build -timestamp-ui \
             -var skip_create_ami=true \
+            -var winrm_password=${{ steps.process-user-data.outputs.pass }} \
             src/packer.pkr.hcl
       - name: Remove /usr/bin/python3 symlink to the installed Python
         run: |

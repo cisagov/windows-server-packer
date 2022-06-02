@@ -94,16 +94,12 @@ jobs:
           GITHUB_IS_PRERELEASE: ${{ github.event.release.prerelease }}
           GITHUB_RELEASE_TAG: ${{ github.event.release.tag_name }}
           GITHUB_RELEASE_URL: ${{ github.event.release.html_url }}
-        # See https://www.packer.io/guides/hcl/variables under the
-        # "From environment variables" section for details about
-        # PKR_VAR environment variables
         run: |
-          PKR_VAR_winrm_password=\
-          "${{ steps.process-user-data.outputs.pass }}" \
           packer build -timestamp-ui \
             -var is_prerelease=${{ github.event.release.prerelease }} \
             -var release_tag=${{ github.event.release.tag_name }} \
             -var release_url=${{ github.event.release.html_url }} \
+            -var winrm_password=${{ steps.process-user-data.outputs.pass }} \
             src/packer.pkr.hcl
       - name: Remove /usr/bin/python3 symlink to the installed python
         run: |

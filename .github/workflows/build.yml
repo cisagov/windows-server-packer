@@ -231,7 +231,6 @@ jobs:
         # pass into Packer as an environment variable.
         run: |
           output=$(python .github/scripts/process_user_data_file.py)
-          echo "::add-mask::$output"
           echo "::set-output name=pass::$output"
       - name: Create machine image
         # This runs through the AMI creation process but does not

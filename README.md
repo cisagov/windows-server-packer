@@ -124,9 +124,8 @@ Here is an example of how to kick off a pre-release build:
 
 ```console
 pip install --requirement requirements-dev.txt
-PKR_VAR_winrm_password="your-winrm-password" \
 AWS_PROFILE=cool-images-ec2amicreate-windows-server-packer \
-packer build --timestamp-ui -var release_tag=$(./bump_version.sh show) -var is_prerelease=true src/packer.pkr.hcl
+packer build --timestamp-ui -var release_tag=$(./bump_version.sh show) -var is_prerelease=true -var winrm_password={password} src/packer.pkr.hcl
 ```
 
 If you are satisfied with your pre-release image, you can easily create a release
@@ -145,7 +144,7 @@ region_kms_keys = {
 ```console
 PKR_VAR_winrm_password="your-winrm-password" \
 AWS_PROFILE=cool-images-ec2amicreate-windows-server-packer \
-packer build --timestamp-ui -var-file release.pkrvars.hcl src/packer.pkr.hcl
+packer build --timestamp-ui -var winrm_password={password} \ -var-file release.pkrvars.hcl src/packer.pkr.hcl
 ```
 
 ### Giving Other AWS Accounts Permission to Launch the Image ###

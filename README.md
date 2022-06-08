@@ -128,7 +128,7 @@ Here is an example of how to kick off a pre-release build:
 pip install --requirement requirements-dev.txt
 AWS_PROFILE=cool-images-ec2amicreate-windows-server-packer \
 packer build --timestamp-ui -var release_tag=$(./bump_version.sh show) \
--var is_prerelease=true -var winrm_password="your-winrm-password src/packer.pkr.hcl
+-var is_prerelease=true -var winrm_password="your-winrm-password" src/packer.pkr.hcl
 ```
 
 If you are satisfied with your pre-release image, you can easily create a release

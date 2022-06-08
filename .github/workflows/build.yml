@@ -228,7 +228,7 @@ jobs:
         id: process-user-data
         # Process the user data script with the Windows admin password
         # pulled from AWS Parameter Store. Return the admin password to
-        # pass into Packer as an environment variable.
+        # pass into Packer via command line variable.
         run: python .github/scripts/process_user_data_file.py
       - name: Create machine image
         # This runs through the AMI creation process but does not

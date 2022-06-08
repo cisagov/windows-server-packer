@@ -84,11 +84,8 @@ jobs:
         id: process-user-data
         # Process the user data script with the Windows admin password
         # pulled from AWS Parameter Store. Return the admin password to
-        # pass into Packer as an environment variable.
-        run: |
-          output=$(python .github/scripts/process_user_data_file.py)
-          echo "::add-mask::$output"
-          echo "::set-output name=pass::$output"
+        # pass into Packer via command line variable.
+        run: python .github/scripts/process_user_data_file.py
       - name: Create machine image
         env:
           GITHUB_IS_PRERELEASE: ${{ github.event.release.prerelease }}

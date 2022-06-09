@@ -1,5 +1,5 @@
 variable "winrm_password" {
-  default     = false
+  default     = ""
   description = "The password used to connect to the instance via WinRM."
   sensitive   = true
   type        = string

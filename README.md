@@ -111,7 +111,7 @@ The [Packer template](src/packer.pkr.hcl) defines a number of variables:
 | release\_tag | The GitHub release tag to use for the tags applied to the created AMI. | `string` | `""` | no |
 | release\_url | The GitHub release URL to use for the tags applied to the created AMI. | `string` | `""` | no |
 | skip\_create\_ami | Indicate if Packer should not create the AMI. | `bool` | `false` | no |
-| winrm\_password | The password used to connect to the instance via WinRM. | `string` | `false` | no |
+| winrm\_password | The password used to connect to the instance via WinRM. | `string` | n/a | yes |
 | winrm\_username | The username used to connect to the instance via WinRM. | `string` | `"Administrator"` | no |
 
 Changing these defaults can be done through a `.pkrvars.hcl` file:

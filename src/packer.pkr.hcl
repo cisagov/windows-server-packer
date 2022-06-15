@@ -1,4 +1,6 @@
 variable "winrm_password" {
+  # Default is set due to a limitation. For more information
+  # see https://github.com/cisagov/windows-server-packer/issues/21.
   default     = ""
   description = "The password used to connect to the instance via WinRM."
   sensitive   = true

@@ -145,9 +145,7 @@ region_kms_keys = {
 ```
 
 ```console
-AWS_PROFILE=cool-images-ec2amicreate-windows-server-packer \
-packer build --timestamp-ui -var winrm_password="your-winrm-password" \
--var-file release.pkrvars.hcl src/packer.pkr.hcl
+AWS_PROFILE=cool-images-ec2amicreate-windows-server-packer packer build --timestamp-ui -var-file release.pkrvars.hcl src/packer.pkr.hcl
 ```
 
 ### Giving Other AWS Accounts Permission to Launch the Image ###

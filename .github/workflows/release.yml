@@ -97,9 +97,10 @@ jobs:
         run: python -m pip install boto3 jinja2
       - name: Process user data file
         id: process-user-data
-        # Process the user data script with the Windows admin password
-        # pulled from AWS Parameter Store. Return the admin password to
-        # pass into Packer via command line variable.
+        # Process the user data script to set the Windows Administrator
+        # password to the value retrieved from AWS Parameter Store. Set a step
+        # output to use the retrieved password as the winrm_password value
+        # with Packer via command line argument.
         run: python .github/scripts/process_user_data_file.py
       - name: Create machine image
         run: |

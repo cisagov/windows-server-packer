@@ -1,4 +1,4 @@
-# windows-server-packer 💀📦 #
+# windows-server-packer 🪟📦 #
 
 [![GitHub Build Status](https://github.com/cisagov/windows-server-packer/workflows/build/badge.svg)](https://github.com/cisagov/windows-server-packer/actions)
 

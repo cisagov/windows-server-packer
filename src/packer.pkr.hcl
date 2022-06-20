@@ -1,6 +1,9 @@
+# This variable is configured as an optional variable because the
+# cisagov/pre-commit-packer hook does not support passing variables to
+# `packer validate`. Once this limitation is removed this should be changed to
+# a required variable. Please see the following for more information:
+# https://github.com/cisagov/windows-server-packer/issues/21
 variable "winrm_password" {
-  # Default is set due to a limitation. For more information
-  # see https://github.com/cisagov/windows-server-packer/issues/21.
   default     = ""
   description = "The password used to connect to the instance via WinRM."
   sensitive   = true

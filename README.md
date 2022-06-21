@@ -142,6 +142,7 @@ region_kms_keys = {
   "us-west-1": "alias/cool-amis",
   "us-west-2": "alias/cool-amis",
 }
+winrm_password = "your-winrm-password"
 ```
 
 ```console

@@ -3,19 +3,6 @@
 # `packer validate`. Once this limitation is removed this should be changed to
 # a required variable. Please see the following for more information:
 # https://github.com/cisagov/windows-server-packer/issues/21
-variable "winrm_password" {
-  default     = ""
-  description = "The password used to connect to the instance via WinRM."
-  sensitive   = true
-  type        = string
-}
-
-variable "winrm_username" {
-  default     = "Administrator"
-  description = "The username used to connect to the instance via WinRM."
-  type        = string
-}
-
 variable "ami_regions" {
   default     = []
   description = "The list of AWS regions to copy the AMI to once it has been created. Example: [\"us-east-1\"]"
@@ -62,6 +49,19 @@ variable "skip_create_ami" {
   default     = false
   description = "Indicate if Packer should not create the AMI."
   type        = bool
+}
+
+variable "winrm_password" {
+  default     = ""
+  description = "The password used to connect to the instance via WinRM."
+  sensitive   = true
+  type        = string
+}
+
+variable "winrm_username" {
+  default     = "Administrator"
+  description = "The username used to connect to the instance via WinRM."
+  type        = string
 }
 
 data "amazon-ami" "windows_server_2022" {

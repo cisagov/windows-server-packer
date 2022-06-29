@@ -2,6 +2,9 @@
 # Files already tracked by Git are not affected.
 # See: https://git-scm.com/docs/gitignore
 
+## macOS ##
+.DS_Store
+
 ## Packer ##
 packer_cache
 
@@ -11,6 +14,7 @@ __pycache__
 .mypy_cache
 .pytest_cache
 .python-version
+.venv
 *.egg-info
 dist
 

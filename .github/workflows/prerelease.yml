@@ -59,8 +59,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade \
                       --requirement requirements.txt
-      - name: Install ansible roles
-        run: ansible-galaxy install --force --role-file src/requirements.yml
       - name: Assume AWS build role
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -80,6 +78,15 @@ jobs:
           sudo mv /usr/bin/python3 /usr/bin/python3-default
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
+      - name: Install process user data file script dependencies
+        run: python -m pip install boto3 jinja2
+      - name: Process user data file
+        id: process-user-data
+        # Process the user data script to set the Windows Administrator
+        # password to the value retrieved from AWS Parameter Store. Set a step
+        # output to use the retrieved password as the winrm_password value
+        # with Packer via command line argument.
+        run: python .github/scripts/process_user_data_file.py
       - name: Create machine image
         env:
           GITHUB_IS_PRERELEASE: ${{ github.event.release.prerelease }}
@@ -90,6 +97,7 @@ jobs:
             -var is_prerelease=${{ github.event.release.prerelease }} \
             -var release_tag=${{ github.event.release.tag_name }} \
             -var release_url=${{ github.event.release.html_url }} \
+            -var winrm_password=${{ steps.process-user-data.outputs.pass }} \
             src/packer.pkr.hcl
       - name: Remove /usr/bin/python3 symlink to the installed python
         run: |

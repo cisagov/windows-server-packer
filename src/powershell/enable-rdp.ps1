@@ -9,6 +9,7 @@ if ($(Get-ItemProperty -Path $path -Name $name).fDenyTSConnections -ne 0) {
 }
 Write-Output "[*] Setting successfully verified: $name"
 
+# Enable Terminal Server user authentication
 $name = "UserAuthentication"
 $path = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'
 Write-Output "[ ] Configuring setting: $name"

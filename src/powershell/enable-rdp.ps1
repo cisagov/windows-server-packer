@@ -1,5 +1,6 @@
 Write-Output "[ ] Attempting to enable RDP service"
 
+# Allow Terminal Server connections
 $name = "fDenyTSConnections"
 $path = "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server"
 Write-Output "[ ] Configuring setting: $name"

@@ -18,6 +18,7 @@ if ($(Get-ItemProperty -Path $path -Name $name).UserAuthentication -ne 1) {
 }
 Write-Output "[*] Setting successfully verified: $name"
 
+# Allow Terminal Server connections through the Windows firewall
 $name = "RemoteDesktop-In-TCP-WS"
 Write-Output "[ ] Configuring firewall rule: $name"
 Set-NetFirewallRule -Name $name -Enabled True

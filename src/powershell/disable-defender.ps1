@@ -1,4 +1,4 @@
-# check for existence windows devender
+# check for existence windows defender
 Write-Output "[ ] Checking if Windows Defender is running"
 Get-Service -Name WinDefend -ErrorVariable err -ErrorAction SilentlyContinue
 if ($err) {

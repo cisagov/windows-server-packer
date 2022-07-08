@@ -1,10 +1,3 @@
-variable "winrm_password" {
-  default     = false
-  description = "The password used to set the Administrator password and connect to the instance via WinRM."
-  sensitive   = true
-  type        = string
-}
-
 variable "ami_regions" {
   default     = []
   description = "The list of AWS regions to copy the AMI to once it has been created. Example: [\"us-east-1\"]"
@@ -51,6 +44,24 @@ variable "skip_create_ami" {
   default     = false
   description = "Indicate if Packer should not create the AMI."
   type        = bool
+}
+
+# The 'winrm_password' variable is configured as an optional variable because
+# the cisagov/pre-commit-packer hook does not support passing variables to
+# `packer validate`. Once this limitation is removed this should be changed to
+# a required variable. Please see the following for more information:
+# https://github.com/cisagov/windows-server-packer/issues/21
+variable "winrm_password" {
+  default     = ""
+  description = "The password used to connect to the instance via WinRM."
+  sensitive   = true
+  type        = string
+}
+
+variable "winrm_username" {
+  default     = "Administrator"
+  description = "The username used to connect to the instance via WinRM."
+  type        = string
 }
 
 data "amazon-ami" "windows_server_2022" {
@@ -106,10 +117,7 @@ source "amazon-ebs" "windows" {
     Release            = var.release_tag
     Team               = "VM Fusion - Development"
   }
-  # Many Linux distributions are now disallowing the use of RSA keys,
-  # so it makes sense to use an ED25519 key instead.
-  temporary_key_pair_type = "ed25519"
-  user_data_file          = "src/winrm_bootstrap.txt"
+  user_data_file = "src/winrm_bootstrap.txt"
   vpc_filter {
     filters = {
       "tag:Name" = "AMI Build"
@@ -119,7 +127,7 @@ source "amazon-ebs" "windows" {
   winrm_password = var.winrm_password
   winrm_timeout  = "20m"
   winrm_use_ssl  = true
-  winrm_username = "Administrator"
+  winrm_username = var.winrm_username
 }
 
 build {
@@ -128,15 +136,21 @@ build {
   ]
 
   provisioner "powershell" {
+    # Wait 10 seconds before executing the disable-defender.ps1 powershell script.
+    # This gives a small grace period between booting up for the first time and running the first provisioner.
     pause_before = "10s"
     scripts      = ["src/powershell/disable-defender.ps1"]
   }
 
   provisioner "windows-restart" {
+    # Wait a maximum of 30 minutes for Windows to restart.
+    # The build will fail if the restart process takes longer than 30 minutes.
     restart_timeout = "30m"
   }
 
   provisioner "powershell" {
+    # Wait 90 seconds before executing the check-defender.ps1 powershell script.
+    # This gives a generous grace period between restarting Windows and running the second provisioner.
     pause_before = "90s"
     scripts      = ["src/powershell/check-defender.ps1"]
   }

@@ -79,32 +79,25 @@ jobs:
           sudo ln -s ${{ env.pythonLocation }}/bin/python3 \
           /usr/bin/python3
       - name: Install process user data file script dependencies
-        run: |
-          pip install boto3 jinja2
+        run: python -m pip install boto3 jinja2
       - name: Process user data file
         id: process-user-data
-        # Process the user data script with the Windows admin password
-        # pulled from AWS Parameter Store. Return the admin password to
-        # pass into Packer as an environment variable.
-        run: |
-          output=$(python .github/scripts/process_user_data_file.py)
-          echo "::add-mask::$output"
-          echo "::set-output name=pass::$output"
+        # Process the user data script to set the Windows Administrator
+        # password to the value retrieved from AWS Parameter Store. Set a step
+        # output to use the retrieved password as the winrm_password value
+        # with Packer via command line argument.
+        run: python .github/scripts/process_user_data_file.py
       - name: Create machine image
         env:
           GITHUB_IS_PRERELEASE: ${{ github.event.release.prerelease }}
           GITHUB_RELEASE_TAG: ${{ github.event.release.tag_name }}
           GITHUB_RELEASE_URL: ${{ github.event.release.html_url }}
-        # See https://www.packer.io/guides/hcl/variables under the
-        # "From environment variables" section for details about
-        # PKR_VAR environment variables
         run: |
-          PKR_VAR_winrm_password=\
-          "${{ steps.process-user-data.outputs.pass }}" \
           packer build -timestamp-ui \
             -var is_prerelease=${{ github.event.release.prerelease }} \
             -var release_tag=${{ github.event.release.tag_name }} \
             -var release_url=${{ github.event.release.html_url }} \
+            -var winrm_password=${{ steps.process-user-data.outputs.pass }} \
             src/packer.pkr.hcl
       - name: Remove /usr/bin/python3 symlink to the installed python
         run: |

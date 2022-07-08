@@ -19,4 +19,5 @@ with open(user_data_file_location) as user_data_file:
 
 # This password is masked from logging when run via GH Actions.
 # But beware if this script is running elsewhere.
-print(password)
+print(f"::add-mask::{password}")
+print(f"::set-output name=pass::{password}")

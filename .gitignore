@@ -2,7 +2,7 @@
 # Files already tracked by Git are not affected.
 # See: https://git-scm.com/docs/gitignore
 
-## MacOS ##
+## macOS ##
 .DS_Store
 
 ## Packer ##

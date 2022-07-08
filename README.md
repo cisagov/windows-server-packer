@@ -1,9 +1,9 @@
-# windows-server-packer 💀📦 #
+# windows-server-packer 🪟📦 #
 
 [![GitHub Build Status](https://github.com/cisagov/windows-server-packer/workflows/build/badge.svg)](https://github.com/cisagov/windows-server-packer/actions)
 
-This project can be used to create a custom Amazon Machine Images based on
-Windows Server 2022
+This project can be used to create a custom Amazon Machine Image based on
+Windows Server 2022.
 
 ## Pre-requisites ##
 
@@ -111,6 +111,8 @@ The [Packer template](src/packer.pkr.hcl) defines a number of variables:
 | release\_tag | The GitHub release tag to use for the tags applied to the created AMI. | `string` | `""` | no |
 | release\_url | The GitHub release URL to use for the tags applied to the created AMI. | `string` | `""` | no |
 | skip\_create\_ami | Indicate if Packer should not create the AMI. | `bool` | `false` | no |
+| winrm\_password | The password used to connect to the instance via WinRM. | `string` | n/a | yes |
+| winrm\_username | The username used to connect to the instance via WinRM. | `string` | `"Administrator"` | no |
 
 Changing these defaults can be done through a `.pkrvars.hcl` file:
 
@@ -124,8 +126,9 @@ Here is an example of how to kick off a pre-release build:
 
 ```console
 pip install --requirement requirements-dev.txt
-ansible-galaxy install --force --force-with-deps --role-file src/requirements.yml
-AWS_PROFILE=cool-images-ec2amicreate-windows-server-packer packer build --timestamp-ui -var release_tag=$(./bump_version.sh show) -var is_prerelease=true src/packer.pkr.hcl
+AWS_PROFILE=cool-images-ec2amicreate-windows-server-packer \
+packer build --timestamp-ui -var release_tag=$(./bump_version.sh show) \
+-var is_prerelease=true -var winrm_password="your-winrm-password" src/packer.pkr.hcl
 ```
 
 If you are satisfied with your pre-release image, you can easily create a release
@@ -139,6 +142,7 @@ region_kms_keys = {
   "us-west-1": "alias/cool-amis",
   "us-west-2": "alias/cool-amis",
 }
+winrm_password = "your-winrm-password"
 ```
 
 ```console

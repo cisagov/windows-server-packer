@@ -1,4 +1,4 @@
-# check for existence windows devender
+# Check for existence of Windows Defender service
 Write-Output "[ ] Checking if Windows Defender is running"
 Get-Service -Name WinDefend -ErrorVariable err -ErrorAction SilentlyContinue
 if ($err) {
@@ -7,7 +7,7 @@ if ($err) {
 }
 Write-Output "[*] Windows Defender found"
 
-# uninstall windows defender service
+# Uninstall Windows Defender service
 Write-Output "[ ] Attempting to uninstall Windows Defender"
 Uninstall-WindowsFeature -Name Windows-Defender -ErrorAction stop
 Write-Output "[*] Successfully ran uninstall command"

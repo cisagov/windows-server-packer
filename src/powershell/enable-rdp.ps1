@@ -1,5 +1,6 @@
 Write-Output "[ ] Attempting to enable RDP service"
 
+# Allow Terminal Server connections
 $name = "fDenyTSConnections"
 $path = "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server"
 Write-Output "[ ] Configuring setting: $name"
@@ -9,6 +10,7 @@ if ($(Get-ItemProperty -Path $path -Name $name).fDenyTSConnections -ne 0) {
 }
 Write-Output "[*] Setting successfully verified: $name"
 
+# Enable Terminal Server user authentication
 $name = "UserAuthentication"
 $path = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'
 Write-Output "[ ] Configuring setting: $name"
@@ -18,6 +20,7 @@ if ($(Get-ItemProperty -Path $path -Name $name).UserAuthentication -ne 1) {
 }
 Write-Output "[*] Setting successfully verified: $name"
 
+# Allow Terminal Server connections through the Windows firewall
 $name = "RemoteDesktop-In-TCP-WS"
 Write-Output "[ ] Configuring firewall rule: $name"
 Set-NetFirewallRule -Name $name -Enabled True

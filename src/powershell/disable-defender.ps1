@@ -13,15 +13,14 @@ if ($err.length -eq 0)
 }
 
 # Check for expected error
-$expectedId = "NoServiceFoundForGivenName,Microsoft.PowerShell.Commands.GetServiceCommand"
-$record = $err[0]
-if ($record.FullyQualifiedErrorId -eq $expectedId)
+if ($err[0].FullyQualifiedErrorId -eq "NoServiceFoundForGivenName,Microsoft.PowerShell.Commands.GetServiceCommand")
 {
     Write-Output "[ ] Windows Defender not found, skipping removal"
     exit 0
 }
-
-# Print output of unexpected error
-Write-Output "[ ] An unexpected error occurred"
-Write-Output $record
-exit 1
+else {
+    # Print output of unexpected error
+    Write-Output "[ ] An unexpected error occurred"
+    Write-Output $err[0]
+    exit 1
+}

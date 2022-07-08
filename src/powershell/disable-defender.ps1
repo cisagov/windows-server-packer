@@ -1,7 +1,7 @@
 # Check for existence of Windows Defender service
 Write-Output "[ ] Checking if Windows Defender is running"
 Get-Service -Name WinDefend -ErrorVariable err -ErrorAction SilentlyContinue
-if ($err.length -eq 0)
+if (!$err)
 {
     # Uninstall Windows Defender service
     Write-Output "[*] Windows Defender found"

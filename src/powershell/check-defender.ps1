@@ -2,7 +2,7 @@
 Write-Output "[ ] Checking if Windows Defender is running"
 Get-Service -Name WinDefend -ErrorVariable err -ErrorAction SilentlyContinue
 
-if ($err.length -eq 0) {
+if (!$err) {
     Write-Error "[X] Failed to uninstall Windows Defender" -ErrorAction Stop
     exit 1
 }

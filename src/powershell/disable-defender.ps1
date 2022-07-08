@@ -1,14 +1,27 @@
 # Check for existence of Windows Defender service
 Write-Output "[ ] Checking if Windows Defender is running"
 Get-Service -Name WinDefend -ErrorVariable err -ErrorAction SilentlyContinue
-if ($err) {
-    Write-Output "[ ] Windows Defender not found, skipping removal"
-    exit 1
+if ($err.length -eq 0)
+{
+    # Uninstall Windows Defender service
+    Write-Output "[*] Windows Defender found"
+    Write-Output "[ ] Attempting to uninstall Windows Defender"
+    Uninstall-WindowsFeature -Name Windows-Defender -ErrorAction stop
+    Write-Output "[*] Successfully ran uninstall command"
+    Write-Output "[ ] Rebooting and then checking if uninstall was successful"
+    exit 0
 }
-Write-Output "[*] Windows Defender found"
 
-# Uninstall Windows Defender service
-Write-Output "[ ] Attempting to uninstall Windows Defender"
-Uninstall-WindowsFeature -Name Windows-Defender -ErrorAction stop
-Write-Output "[*] Successfully ran uninstall command"
-Write-Output "[ ] Rebooting and then checking if uninstall was successful"
+# Check for expected error
+$expectedId = "NoServiceFoundForGivenName,Microsoft.PowerShell.Commands.GetServiceCommand"
+$record = $err[0]
+if ($record.FullyQualifiedErrorId -eq $expectedId)
+{
+    Write-Output "[ ] Windows Defender not found, skipping removal"
+    exit 0
+}
+
+# Print output of unexpected error
+Write-Output "[ ] An unexpected error occurred"
+Write-Output $record
+exit 1

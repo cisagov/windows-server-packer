@@ -51,4 +51,3 @@ Write-Output "[*] Setting successfully verified: $name"
 # Give administrator account full control of Terminal Server
 Get-CimInstance -Namespace root\CIMV2\TerminalServices -ClassName Win32_TSPermissionsSetting -Filter 'TerminalName ="RDP-Tcp"' |
         Invoke-CimMethod -MethodName AddAccount -Arguments @{AccountName="BUILTIN\Administrators"; PermissionPreSet="2"}
-

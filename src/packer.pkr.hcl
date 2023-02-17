@@ -78,13 +78,6 @@ data "amazon-ami" "windows_server_2022" {
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 
 source "amazon-ebs" "windows" {
-  ami_block_device_mappings {
-    delete_on_termination = true
-    device_name           = "/dev/xvda"
-    encrypted             = true
-    volume_size           = 8
-    volume_type           = "gp3"
-  }
   ami_name                    = "windows-server-2022-${local.timestamp}-x86_64-ebs"
   ami_regions                 = var.ami_regions
   associate_public_ip_address = true

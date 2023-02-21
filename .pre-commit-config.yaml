@@ -68,7 +68,7 @@ repos:
         args:
           # Indent by two spaces
           - -i
-          - "2"
+          - '2'
           # Binary operators may start a line
           - -bn
           # Switch cases are indented

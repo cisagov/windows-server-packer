@@ -57,7 +57,7 @@ $name = "Terminal Services"
 $path = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services'
 Write-Output "[ ] Configuring setting: $name"
 Set-ItemProperty -Path $path -Name $name -Value "2"
-if ($(Get-ItemProperty -Path $path -Name $name).UserAuthentication -ne 2) {
+if ($(Get-ItemProperty -Path $path -Name $name).$name -ne 2) {
     Write-Error "[X] Failed to verify setting: $name" -ErrorAction Stop
 }
 Write-Output "[*] Setting successfully verified: $name"

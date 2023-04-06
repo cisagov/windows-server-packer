@@ -51,3 +51,13 @@ Write-Output "[*] Setting successfully verified: $name"
 # Give the Administrators group full control of Terminal Server
 Get-CimInstance -Namespace root\CIMV2\TerminalServices -ClassName Win32_TSPermissionsSetting -Filter 'TerminalName ="RDP-Tcp"' |
         Invoke-CimMethod -MethodName AddAccount -Arguments @{AccountName="BUILTIN\Administrators"; PermissionPreSet="2"}
+
+# Enable Shadow Remote Desktop
+$name = "Terminal Services"
+$path = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services'
+Write-Output "[ ] Configuring setting: $name"
+Set-ItemProperty -Path $path -Name $name -Value "2"
+if ($(Get-ItemProperty -Path $path -Name $name).UserAuthentication -ne 2) {
+    Write-Error "[X] Failed to verify setting: $name" -ErrorAction Stop
+}
+Write-Output "[*] Setting successfully verified: $name"

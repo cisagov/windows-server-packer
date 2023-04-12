@@ -39,13 +39,13 @@ if ($(Get-NetFirewallRule -DisplayName $name).Enabled -ne $true) {
 Write-Output "[*] Firewall rule successfully verified: $name"
 
 # Enable Terminal Server shadowing
-# Set value to option 1:
-# "Allow connections only from computers running Remote Desktop with Network Level Authentication (recommended)"
+# Set value to option 2:
+# "Configure Group Policy setting to not require the user’s consent"
 $name = "Shadow"
 $path = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'
 Write-Output "[ ] Configuring setting: $name"
-Set-ItemProperty -Path $path -Name $name -Value "1"
-if ($(Get-ItemProperty -Path $path -Name $name).Shadow -ne 1) {
+Set-ItemProperty -Path $path -Name $name -Value "2"
+if ($(Get-ItemProperty -Path $path -Name $name).Shadow -ne 2) {
     Write-Error "[X] Failed to verify setting: $name" -ErrorAction Stop
 }
 Write-Output "[*] Setting successfully verified: $name"
@@ -56,7 +56,7 @@ Get-CimInstance -Namespace root\CIMV2\TerminalServices -ClassName Win32_TSPermis
 
 # Enable Shadow Remote Desktop
 # Set value to option 2:
-# "Allow connections only from computers running Remote Desktop with Network Level Authentication (recommended)"
+# "Allow Full Control without user’s permission"
 $name = "Terminal Services"
 $path = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services'
 Write-Output "[ ] Configuring setting: $name"

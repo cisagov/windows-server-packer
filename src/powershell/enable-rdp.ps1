@@ -39,6 +39,8 @@ if ($(Get-NetFirewallRule -DisplayName $name).Enabled -ne $true) {
 Write-Output "[*] Firewall rule successfully verified: $name"
 
 # Enable Terminal Server shadowing
+# Set value to option 1:
+# "Allow connections only from computers running Remote Desktop with Network Level Authentication (recommended)"
 $name = "Shadow"
 $path = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'
 Write-Output "[ ] Configuring setting: $name"
@@ -53,6 +55,8 @@ Get-CimInstance -Namespace root\CIMV2\TerminalServices -ClassName Win32_TSPermis
         Invoke-CimMethod -MethodName AddAccount -Arguments @{AccountName="BUILTIN\Administrators"; PermissionPreSet="2"}
 
 # Enable Shadow Remote Desktop
+# Set value to option 2:
+# "Allow connections only from computers running Remote Desktop with Network Level Authentication (recommended)"
 $name = "Terminal Services"
 $path = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services'
 Write-Output "[ ] Configuring setting: $name"

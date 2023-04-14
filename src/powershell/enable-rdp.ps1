@@ -50,9 +50,17 @@ if ($(Get-ItemProperty -Path $path -Name $name).Shadow -ne 2) {
 }
 Write-Output "[*] Setting successfully verified: $name"
 
-# Give the Administrators group full control of Terminal Server
-Get-CimInstance -Namespace root\CIMV2\TerminalServices -ClassName Win32_TSPermissionsSetting -Filter 'TerminalName ="RDP-Tcp"' |
+# Give the Administrator account full control of Remote Desktop Services
+# Set PermissionPreSet value to option 2:
+# "WINSTATION_ALL_ACCESS"
+$name = "Administrator RDP All Access"
+Write-Output "[ ] Configuring setting: $name"
+$result = Get-CimInstance -Namespace root\CIMV2\TerminalServices -ClassName Win32_TSPermissionsSetting -Filter 'TerminalName ="RDP-Tcp"' |
         Invoke-CimMethod -MethodName AddAccount -Arguments @{AccountName="BUILTIN\Administrators"; PermissionPreSet="2"}
+if ($result.ReturnValue -ne 0) {
+    Write-Error "[X] Failed to verify setting: $name" -ErrorAction Stop
+}
+Write-Output "[*] Setting successfully verified: $name"
 
 # Enable Shadow Remote Desktop
 # Set value to option 2:

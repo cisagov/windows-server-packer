@@ -55,7 +55,7 @@ Write-Output "[*] Setting successfully verified: $name"
 # "WINSTATION_ALL_ACCESS"
 $name = "Administrator RDP All Access"
 Write-Output "[ ] Configuring setting: $name"
-$result = Get-CimInstance -Namespace root\CIMV2\TerminalServices -ClassName Win32_TSPermissionsSetting -Filter 'TerminalName ="RDP-Tcp"' |
+$result = Get-CimInstance -Namespace root\CIMV2\TerminalServices -ClassName Win32_TSPermissionsSetting -Filter 'TerminalName="RDP-Tcp"' |
         Invoke-CimMethod -MethodName AddAccount -Arguments @{AccountName="BUILTIN\Administrators"; PermissionPreSet="2"}
 if ($result.ReturnValue -ne 0) {
     Write-Error "[X] Failed to verify setting: $name" -ErrorAction Stop

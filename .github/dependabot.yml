@@ -20,7 +20,7 @@ updates:
       - dependency-name: hashicorp/setup-terraform
       - dependency-name: mxschmitt/action-tmate
       # # Managed by cisagov/skeleton-packer
-      # - dependency-name: aws-actions/configure-aws-credentials
+      - dependency-name: aws-actions/configure-aws-credentials
 
   - package-ecosystem: "pip"
     directory: "/"

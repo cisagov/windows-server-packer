@@ -31,24 +31,12 @@ updates:
     directory: "/terraform-build-user"
     schedule:
       interval: "weekly"
-<<<<<<< HEAD
     ignore:
       - dependency-name: "hashicorp/aws"
-=======
-    # # Managed by cisagov/skeleton-packer
-    # ignore:
-    #   - dependency-name: "hashicorp/aws"
->>>>>>> b3e09062ceb1b20275a8120608b1f4bb3890f72c
 
   - package-ecosystem: "terraform"
     directory: "/terraform-post-packer"
     schedule:
       interval: "weekly"
-<<<<<<< HEAD
     ignore:
       - dependency-name: "hashicorp/aws"
-=======
-    # # Managed by cisagov/skeleton-packer
-    # ignore:
-    #   - dependency-name: "hashicorp/aws"
->>>>>>> b3e09062ceb1b20275a8120608b1f4bb3890f72c

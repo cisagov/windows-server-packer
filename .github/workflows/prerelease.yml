@@ -12,12 +12,36 @@ env:
   RUN_TMATE: ${{ secrets.RUN_TMATE }}
 
 jobs:
-  prerelease:
+  diagnostics:
+    name: Run diagnostics
     runs-on: ubuntu-latest
     steps:
+      # Note that a duplicate of this step must be added at the top of
+      # each job.
+      - id: harden-runner
+        name: Harden the runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+      - id: github-status
+        name: Check GitHub status
+        uses: crazy-max/ghaction-github-status@v3
+      - id: dump-context
+        name: Dump context
+        uses: crazy-max/ghaction-dump-context@v2
+  prerelease:
+    needs:
+      - diagnostics
+    runs-on: ubuntu-latest
+    steps:
+      - id: harden-runner
+        name: Harden the runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
       - id: setup-env
         uses: cisagov/setup-env-github-action@develop
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: setup-python
         uses: actions/setup-python@v4
         with:
@@ -60,7 +84,7 @@ jobs:
           pip install --upgrade \
                       --requirement requirements.txt
       - name: Assume AWS build role
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -87,6 +111,8 @@ jobs:
         # output to use the retrieved password as the winrm_password value
         # with Packer via command line argument.
         run: python .github/scripts/process_user_data_file.py
+      - name: Install Packer plugins
+        run: packer init src
       - name: Create machine image
         env:
           GITHUB_IS_PRERELEASE: ${{ github.event.release.prerelease }}

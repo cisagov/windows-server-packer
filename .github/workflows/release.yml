@@ -1,9 +1,10 @@
 ---
 name: release
 
-on:
+on:  # yamllint disable-line rule:truthy
   release:
-    types: [released]
+    types:
+      - released
 
 env:
   AWS_DEFAULT_REGION: us-east-1
@@ -26,24 +27,36 @@ jobs:
     steps:
       # Note that a duplicate of this step must be added at the top of
       # each job.
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      - name: Apply standard cisagov job preamble
+        uses: cisagov/action-job-preamble@v1
         with:
-          # Uses the organization variable unless overridden
-          config: ${{ vars.ACTIONS_PERMISSIONS_CONFIG }}
-      # Note that a duplicate of this step must be added at the top of
-      # each job.
-      - id: harden-runner
-        name: Harden the runner
-        uses: step-security/harden-runner@v2
-        with:
-          egress-policy: audit
-      - id: github-status
-        name: Check GitHub status
-        uses: crazy-max/ghaction-github-status@v4
-      - id: dump-context
-        name: Dump context
-        uses: crazy-max/ghaction-dump-context@v2
+          check_github_status: "true"
+          # This functionality is poorly implemented and has been
+          # causing problems due to the MITM implementation hogging or
+          # leaking memory.  As a result we disable it by default.  If
+          # you want to temporarily enable it, simply set
+          # monitor_permissions equal to "true".
+          #
+          # TODO: Re-enable this functionality when practical.  See
+          # cisagov/skeleton-packer#411 for more details.
+          monitor_permissions: "false"
+          output_workflow_context: "true"
+          # Use a variable to specify the permissions monitoring
+          # configuration. By default this will yield the
+          # configuration stored in the cisagov organization-level
+          # variable, but if you want to use a different configuration
+          # then simply:
+          # 1. Create a repository-level variable with the name
+          # ACTIONS_PERMISSIONS_CONFIG.
+          # 2. Set this new variable's value to the configuration you
+          # want to use for this repository.
+          #
+          # Note in particular that changing the permissions
+          # monitoring configuration *does not* require you to modify
+          # this workflow.
+          permissions_monitoring_config: ${{ vars.ACTIONS_PERMISSIONS_CONFIG }}
   release:
+    environment: production
     needs:
       - diagnostics
     permissions:
@@ -58,15 +71,32 @@ jobs:
           # - arm64
           - x86_64
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      - name: Apply standard cisagov job preamble
+        uses: cisagov/action-job-preamble@v1
         with:
-          # Uses the organization variable unless overridden
-          config: ${{ vars.ACTIONS_PERMISSIONS_CONFIG }}
-      - id: harden-runner
-        name: Harden the runner
-        uses: step-security/harden-runner@v2
-        with:
-          egress-policy: audit
+          # This functionality is poorly implemented and has been
+          # causing problems due to the MITM implementation hogging or
+          # leaking memory.  As a result we disable it by default.  If
+          # you want to temporarily enable it, simply set
+          # monitor_permissions equal to "true".
+          #
+          # TODO: Re-enable this functionality when practical.  See
+          # cisagov/skeleton-packer#411 for more details.
+          monitor_permissions: "false"
+          # Use a variable to specify the permissions monitoring
+          # configuration. By default this will yield the
+          # configuration stored in the cisagov organization-level
+          # variable, but if you want to use a different configuration
+          # then simply:
+          # 1. Create a repository-level variable with the name
+          # ACTIONS_PERMISSIONS_CONFIG.
+          # 2. Set this new variable's value to the configuration you
+          # want to use for this repository.
+          #
+          # Note in particular that changing the permissions
+          # monitoring configuration *does not* require you to modify
+          # this workflow.
+          permissions_monitoring_config: ${{ vars.ACTIONS_PERMISSIONS_CONFIG }}
       - id: setup-env
         uses: cisagov/setup-env-github-action@develop
       - uses: actions/checkout@v4
@@ -76,15 +106,15 @@ jobs:
           python-version: ${{ steps.setup-env.outputs.python-version }}
       - uses: actions/cache@v4
         env:
-          BASE_CACHE_KEY: "${{ github.job }}-${{ runner.os }}-\
+          BASE_CACHE_KEY: ${{ github.job }}-${{ runner.os }}-\
             py${{ steps.setup-python.outputs.python-version }}-\
             packer${{ steps.setup-env.outputs.packer-version }}-\
-            tf-${{ steps.setup-env.outputs.terraform-version }}-"
+            tf-${{ steps.setup-env.outputs.terraform-version }}-
         with:
           path: |
             ${{ env.PIP_CACHE_DIR }}
-          key: "${{ env.BASE_CACHE_KEY }}\
-            ${{ hashFiles('**/requirements.txt') }}"
+          key: ${{ env.BASE_CACHE_KEY }}\
+            ${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ env.BASE_CACHE_KEY }}
       - uses: hashicorp/setup-packer@v3
@@ -112,7 +142,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-          role-to-assume: ${{ secrets.BUILD_ROLE_TO_ASSUME_PRODUCTION }}
+          role-to-assume: ${{ secrets.BUILD_ROLE_TO_ASSUME }}
           role-duration-seconds: 3600
       # When called by Packer, Ansible will find /usr/bin/python3 and
       # use it; therefore, we must ensure that /usr/bin/python3 points
@@ -136,10 +166,26 @@ jobs:
         run: python .github/scripts/process_user_data_file.py
       - name: Install Packer plugins
         run: packer init .
+      # If the AMI to be built via Packer requires anything from the
+      # third-party bucket then you will require this step.
+      # - id: get-third-party-bucket-name
+      #   name: Get the third-party bucket name from SSM Parameter Store
+      #   run: |
+      #     echo name=$(aws ssm get-parameter \
+      #       --name /third_party_bucket_name \
+      #       --output text \
+      #       --query Parameter.Value \
+      #       --with-decryption) >> $GITHUB_OUTPUT
       - name: Create machine image
+        # Note that if you uncomment the get-third-party-bucket-name
+        # step above then you will likely need to add a line like
+        # this after -timestamp-ui \:
+        # -var build_bucket=${{ steps.get-third-party-bucket-name.outputs.name }} \
         run: |
           packer build -only amazon-ebs.${{ matrix.architecture }} \
             -timestamp-ui \
+            -var github_ref_name=${{ github.ref_name }} \
+            -var github_sha=${{ github.sha }} \
             -var is_prerelease=${{ github.event.release.prerelease }} \
             -var release_tag=${{ github.event.release.tag_name }} \
             -var release_url=${{ github.event.release.html_url }} \

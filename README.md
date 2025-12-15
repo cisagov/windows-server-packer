@@ -1,6 +1,8 @@
 # windows-server-packer 🪟📦 #
 
 [![GitHub Build Status](https://github.com/cisagov/windows-server-packer/workflows/build/badge.svg)](https://github.com/cisagov/windows-server-packer/actions)
+[![License](https://img.shields.io/github/license/cisagov/windows-server-packer)](https://spdx.org/licenses/)
+[![CodeQL](https://github.com/cisagov/windows-server-packer/workflows/CodeQL/badge.svg)](https://github.com/cisagov/windows-server-packer/actions/workflows/codeql-analysis.yml)
 
 This project can be used to create a custom Amazon Machine Image based on
 Windows Server 2022.

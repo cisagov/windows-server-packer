@@ -13,8 +13,6 @@ ansible>=10,<11
 # requirements-test.txt in cisagov/skeleton-ansible-role and
 # .pre-commit-config.yaml in cisagov/skeleton-generic.
 ansible-core>=2.17.7
-boto3
-docopt
 # The bump-version script requires at least version 3 of semver.
 semver>=3
 setuptools

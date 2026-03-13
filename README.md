@@ -26,13 +26,6 @@ next steps. Note that you will need to know where your team stores their
 remote profile data in order to use
 [`aws-profile-sync`](https://github.com/cisagov/aws-profile-sync).
 
-> [!IMPORTANT]
-> Unless you are using the `community.general.json_query` Ansible
-> filter, there is a good chance that you do not need the `jmespath`
-> Python dependency that is included in
-> [`requirements.txt`](requirements.txt).  In such a case this
-> dependency can be removed from that file.
-
 ### Creating a build user ###
 
 You will need to create a build user for each environment that you use.  The
